@@ -39,16 +39,17 @@ vocabulary = {"QUIT": "Q",
               "FOREST": "5"}
 
 loc = 1
-while True:
-    availableExits = ", ".join(exits[loc].keys())
 
-    print(locations[loc])
+while True:
+    #Since now there's a master dictionary the location keys
+    availableExits = ", ".join(locations[loc]["exits"].keys())
+    print(locations[loc]["desc"])
 
     if loc == 0:
         break
     else:
-        allExits = exits[loc].copy()
-        allExits.update(namedExits[loc])
+        allExits = locations[loc]["exits"].copy()
+        allExits.update(locations[loc]["namedExits"])
 
     direction = input("Available exits are " + availableExits).upper()
     print()
