@@ -29,5 +29,5 @@ except KeyError:
 # Issubset vs. Issuperset
 if squares.issubset(even):
     print("Squares is a subset of even")
-if even.issuperset(squares)
+if even.issuperset(squares):
     print("Even is superset of squares")
