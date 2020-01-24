@@ -4,19 +4,19 @@ import pickle
 rageAgainstMachine = ('Rage Against The Machine',
                       'Evil Empire',
                       1996,
-                      ( 1, 'People of the Sun',
-                        2, 'Bulls on Parade',
-                        3, 'Vietnow',
-                        4, 'Revolver'))
+                      ((1, 'People of the Sun'),
+                       (2, 'Bulls on Parade'),
+                       (3, 'Vietnow'),
+                       (4, 'Revolver')))
 
 even = range(0, 20, 2)
 odd = range(1, 21, 2)
 
 with open('pickleFile', 'wb') as ragePickle:
-    pickle.dump(rageAgainstMachine, ragePickle)
-    pickle.dump(even, ragePickle)
-    pickle.dump(odd, ragePickle)
-    pickle.dump(2998033, ragePickle)
+    pickle.dump(rageAgainstMachine, ragePickle,protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(even, ragePickle, protocol=0) # The most human readable protocol
+    pickle.dump(odd, ragePickle, protocol=pickle.DEFAULT_PROTOCOL)
+    pickle.dump(2998033, ragePickle, protocol=pickle.DEFAULT_PROTOCOL)
 
 with open('pickleFile', 'rb') as limpPickle:
     rage2 = pickle.load(limpPickle)
