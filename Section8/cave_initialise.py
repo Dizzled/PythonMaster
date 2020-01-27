@@ -1,3 +1,5 @@
+import shelve
+
 # Modify the program from the Second Dictionary challenge of lecture 56
 # to use shelves instead of dictionaries.
 #
@@ -10,9 +12,9 @@
 #
 # Just to be clear, cave_game.py will contain the code from line 45, everything
 # before that (modified to use shelves) will be in cave_initialise.py.
-
-
-locations = {0: {"desc": "You are sitting in front of a computer learning Python",
+locations = shelve.open('locations')
+locations['locations'] = \
+            {0: {"desc": "You are sitting in front of a computer learning Python",
                  "exits": {},
                  "namedExits": {}},
              1: {"desc": "You are standing at the end of a road before a small brick building",
@@ -30,9 +32,11 @@ locations = {0: {"desc": "You are sitting in front of a computer learning Python
              5: {"desc": "You are in the forest",
                  "exits": {"W": 2, "S": 1, "Q": 0},
                  "namedExits": {"2": 2, "1": 1}}
-             }
+            }
 
-vocabulary = {"QUIT": "Q",
+vocabulary = shelve.open('vocabulary')
+vocabulary['vocabulary'] = \
+            {"QUIT": "Q",
               "NORTH": "N",
               "SOUTH": "S",
               "EAST": "E",
@@ -41,33 +45,8 @@ vocabulary = {"QUIT": "Q",
               "HILL": "2",
               "BUILDING": "3",
               "VALLEY": "4",
-              "FOREST": "5"}
+              "FOREST": "5"
+             }
 
-loc = 1
-
-while True:
-    #Since now there's a master dictionary the location keys
-    availableExits = ", ".join(locations[loc]["exits"].keys())
-    print(locations[loc]["desc"])
-
-    if loc == 0:
-        break
-    else:
-        allExits = locations[loc]["exits"].copy()
-        allExits.update(locations[loc]["namedExits"])
-
-    direction = input("Available exits are " + availableExits).upper()
-    print()
-
-    # Parse the user input, using our vocabulary dictionary if necessary
-    if len(direction) > 1:  # more than 1 letter, so check vocab
-        words = direction.split()
-        for word in words:
-            if word in vocabulary:  # does it contain a word we know?
-                direction = vocabulary[word]
-                break
-
-    if direction in allExits:
-        loc = allExits[direction]
-    else:
-        print("You cannot go in that direction")
+locations.close()
+vocabulary.close()
