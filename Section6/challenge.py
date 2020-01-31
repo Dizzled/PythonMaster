@@ -85,9 +85,9 @@ locations = {0: "Your sitting in front of a computer learning Python",
              4: "You are in a valley beside a stream",
              5: "You are in the forest"}
 
-# print(locations[0].split())
-# print(locations[3].split(","))
-# print(''.join(locations[0].split()))
+print(locations[0].split())
+print(locations[3].split(","))
+print(''.join(locations[0].split()))
 
 exits = {0: {"Q": 0},
          1: {"W": 2, "E": 3, "N": 5, "S": 4, "Q": 0},
