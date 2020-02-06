@@ -23,6 +23,11 @@
 import tkinter
 import math
 result = 0
+# Store the values in an array
+result1 = []
+result2 = []
+
+flag, ad, di, su, mu = False, False, False, False, False
 mainWindow = tkinter.Tk()
 mainWindow.title("Calculator")
 mainWindow.geometry('640x480')
@@ -51,19 +56,75 @@ mainWindow.iconphoto(False, icon)
 # outputWindow.grid(row=1, column=0, sticky='nsew', rowspan=1)
 # outputWindow.tag_add('output', '1.0')
 def callback(nb):
-    result = int(nb.widget['text'])
+
+    if flag:
+        result2.append(nb.widget['text'])
+        outPut.configure(text=nb.widget['text'])
+    else:
+        result1.append(nb.widget['text'])
+        outPut.configure(text=nb.widget['text'])
 
 def add(nb):
-    result = int(nb.widget['text'])
+    global flag
+    global ad
+    flag = True
+    ad = True
 
 def subtract(nb):
-    result = int(nb.widget['text'])
+    global flag
+    global su
+    flag = True
+    su = True
 
 def multiply(nb):
-    result = int(nb.widget['text'])
+    global flag
+    global mu
+    flag = True
+    mu = True
 
 def divide(nb):
-    result = int(nb.widget['text'])
+    global flag
+    global di
+    flag = True
+    di = True
+
+def equal(nb):
+    global result
+    global result1
+    global result2
+
+    x = int("".join(result1))
+    y = int("".join(result2))
+
+    if ad:
+        result = x + y
+    elif su:
+        result = x - y
+    elif mu:
+        result = x * y
+    elif di:
+        result = x / y
+
+
+def clear(nb):
+
+    global ad, su, mu, di, result
+    global flag
+    flag = False
+    result = 0
+
+    del result1[:]
+    del result2[:]
+
+    ad = False
+    su = False
+    mu = False
+    di = False
+
+def update(nb):
+
+    nb.configure(text=result)
+    clear(nb)
 
 newButton = dict()
 
@@ -73,19 +134,18 @@ for x in range(0, 10):
     newButton.update({f'{x}': tkinter.Button(mainWindow, text='{}'.format(x))})
     newButton[f'{x}'].bind("<Button-1>", callback)
     if x >= 7: # Need to be in row 2, column 0, 1 ,2
-        newButton.get(f'{x}').grid(row=2, column=column, padx=1)
+        newButton.get(f'{x}').grid(row=2, column=column, padx=2)
         column = column + 1
     elif (x >= 4) and (x <= 6): # Need to be in row 3, column 0, 1, 2
-        newButton.get(f'{x}').grid(row=3, column=column, padx=1)
+        newButton.get(f'{x}').grid(row=3, column=column, padx=2)
         column = column + 1
     elif (x >= 1) and (x <= 3): # Need to be in row 4, column 0, 1, 2
-        newButton.get(f'{x}').grid(row=4, column=column, padx=1)
+        newButton.get(f'{x}').grid(row=4, column=column, padx=2)
         column = column + 1
     elif x <= 0: # Need to be in row 5, column 0
-        newButton.get(f"{x}").grid(row=5, column=column, padx=1)
+        newButton.get(f"{x}").grid(row=5, column=column, padx=2)
     if column > 2:
         column = 0
-
 
 newButton.update({'+': tkinter.Button(mainWindow, text='+')})
 newButton['+'].bind("<Button-1>", add)
@@ -103,8 +163,20 @@ newButton.update({'/': tkinter.Button(mainWindow, text='/')})
 newButton['/'].bind("<Button-1>", divide)
 newButton.get('/').grid(column=3, row=5)
 
-newButton.update({'=': tkinter.Button(mainWindow, text='=')})
-newButton['='].bind("<Button-1>", divide)
+outPut = tkinter.Label(mainWindow, text=result, font=('Arial', 12, 'bold'), justify=tkinter.LEFT, bg='white')
+outPut.grid(column=0, row=0, columnspan=4, sticky='nwe')
+
+newButton.update({'=': tkinter.Button(mainWindow, text='=', command=lambda: update(outPut))})
+newButton['='].bind("<Button-1>", equal)
 newButton.get('=').grid(column=1, row=5, columnspan=2, sticky='we')
+
+newButton.update({'C': tkinter.Button(mainWindow, text='C', command=lambda: update(outPut))})
+newButton['C'].bind("<Button-1>", clear)
+newButton.get('C').grid(column=0, row=1)
+
+newButton.update({'CE': tkinter.Button(mainWindow, text='CE', command=lambda: update(outPut))})
+newButton['CE'].bind("<Button-1>", clear)
+newButton.get('CE').grid(column=1, row=1, sticky='we')
+
 
 mainWindow.mainloop()

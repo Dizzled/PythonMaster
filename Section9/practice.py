@@ -1,16 +1,14 @@
 import tkinter
-window = tkinter.Tk()
-counter = tkinter.IntVar()
-counter.set(0)
-frame = tkinter.Frame(window)
-def click(var, value):
-    var.set(var.get() + value)
-    frame = tkinter.Frame(window)
-    frame.pack()
-button = tkinter.Button(frame, text='Up', command=lambda: click(counter, 1))
-button.pack()
-button = tkinter.Button(frame, text='Down', command=lambda: click(counter, -1))
-button.pack()
-label = tkinter.Label(frame, textvariable=counter)
-label.pack()
-window.mainloop()
+import time
+
+def update_the_label():
+    updated_text = time.strftime("The GM time now is %H:%M:%S.", time.gmtime())
+    w.configure(text=updated_text)
+
+root = tkinter.Tk()
+w = tkinter.Label(root, text="Hello, world!")
+b = tkinter.Button(root, text="Update the label", command=update_the_label)
+w.pack()
+b.pack()
+
+root.mainloop()
