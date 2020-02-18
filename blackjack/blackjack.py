@@ -77,7 +77,6 @@ def dealDealer():
         resultText.set('Draw!')
 
 
-
 def dealPlayer():
 
     playerHand.append(dealCard(playerCardFrame))
@@ -108,16 +107,26 @@ def dealPlayer():
 def resetGame():
 
     global deck
-    dealerHand.clear()
-    playerHand.clear()
-    playerScoreLabel.set('0')
-    dealerScoreLabel.set('0')
+    global dealerCardFrame
+    global playerCardFrame
+    global playerHand
+    global dealerHand
+    playerCardFrame.destroy()
+    dealerCardFrame.destroy()
 
-    deck = list(cards)
-    random.shuffle(deck)
+    playerCardFrame = tkinter.Frame(cardFrame, background='green')
+    playerCardFrame.grid(row=2, column=1, sticky='ew', rowspan=2)
+
+    # embedded frame to hold the card images
+    dealerCardFrame = tkinter.Frame(cardFrame, background='green')
+    dealerCardFrame.grid(row=0, column=1, sticky='ew', rowspan=2)
+
+    resultText.set("")
+
     dealPlayer()
-    dealDealer()
-    dealerCardFrame()
+    dealerHand.append(dealCard(dealerCardFrame))
+    dealerScoreLabel.set(scoreHand(dealerHand))
+    dealPlayer()
 
 
 mainWindow = tkinter.Tk()
@@ -146,8 +155,8 @@ playerScoreLabel = tkinter.IntVar()
 tkinter.Label(cardFrame, text='Player', background='green', fg='white').grid(row=2, column=0)
 tkinter.Label(cardFrame, textvariable=playerScoreLabel, background='green', fg='white').grid(row=3, column=0)
 
-
 # embedded frame to hold the card images
+
 playerCardFrame = tkinter.Frame(cardFrame, background='green')
 playerCardFrame.grid(row=2, column=1, sticky='ew', rowspan=2)
 
@@ -159,7 +168,6 @@ dealerButton.grid(row=0, column=0)
 
 playerButton = tkinter.Button(buttonFrame, text='Player', command=dealPlayer)
 playerButton.grid(row=0, column=1)
-
 
 resetGame = tkinter.Button(buttonFrame, text='New Game', command=resetGame)
 resetGame.grid(row=0, column=2)
@@ -181,4 +189,6 @@ dealPlayer()
 dealerHand.append(dealCard(dealerCardFrame))
 dealerScoreLabel.set(scoreHand(dealerHand))
 dealPlayer()
+
+
 mainWindow.mainloop()
