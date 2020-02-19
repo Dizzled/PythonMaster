@@ -70,13 +70,20 @@ def dealDealer():
 
     playerScore = scoreHand(playerHand)
     if playerScore > 21:
-        resultText.set("Dealer Wins!")
+        checkwin(1)
+        # resultText.set("Dealer Wins!")
+
     elif dealerScore > 21 or dealerScore < playerScore:
-        resultText.set('Player Wins!')
+        checkwin(2)
+        # resultText.set('Player Wins!')
+
     elif dealerScore > playerScore:
-        resultText.set("Dealer Wins!")
+        # resultText.set("Dealer Wins!")
+        checkwin(1)
+
     else:
-        resultText.set('Draw!')
+        # resultText.set('Draw!')
+        checkwin(3)
 
 
 def dealPlayer():
@@ -86,7 +93,9 @@ def dealPlayer():
 
     playerScoreLabel.set(playerScore)
     if playerScore > 21:
-        resultText.set('Dealer Wins!')
+        # resultText.set('Dealer Wins!')
+        checkwin(1)
+
     # global playerScore
     # global playerAce
     #
@@ -113,6 +122,7 @@ def newGame():
     global playerCardFrame
     global playerHand
     global dealerHand
+
     playerCardFrame.destroy()
     dealerCardFrame.destroy()
 
@@ -135,6 +145,25 @@ def newGame():
 def shuffleDeck():
     random.shuffle(deck)
 
+
+def checkwin(score):
+
+    global dealerTally
+    global playerTally
+
+    if score is 1:
+        resultText.set('Dealer Wins')
+        dealerTally += 1
+    elif score is 2:
+        resultText.set('Player Wins')
+        playerTally += 1
+    else:
+        resultText.set('Draw!')
+
+
+playerTally = 0
+dealerTally = 0
+
 mainWindow = tkinter.Tk()
 # Set up the screen and frames for the dealer and player
 mainWindow.title("Black Jack")
@@ -144,6 +173,12 @@ mainWindow.configure(background='green')
 resultText = tkinter.StringVar()
 result = tkinter.Label(mainWindow, textvariable=resultText)
 result.grid(row=0, column=0, columnspan=3)
+dealerText = tkinter.StringVar(dealerTally)
+dealerWins = tkinter.Label(mainWindow, textvariable=dealerText)
+dealerWins.grid(row=0, column=2, columnspan=1)
+playerText = tkinter.StringVar(playerTally)
+playerWins = tkinter.Label(mainWindow, textvariable=playerText)
+playerWins.grid(row=0, column=3, columnspan=1)
 
 cardFrame = tkinter.Frame(mainWindow, relief='sunken', borderwidth=1, background='green')
 cardFrame.grid(row=1, column=0, sticky='ew', columnspan=3, rowspan=2)
@@ -185,6 +220,7 @@ shuffle.grid(row=0, column=3)
 cards = []
 loadImages(cards)
 # print(cards)
+
 
 # Create a new deck of cards and shuffle them
 deck = list(cards)
