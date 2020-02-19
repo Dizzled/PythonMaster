@@ -154,9 +154,11 @@ def checkwin(score):
     if score is 1:
         resultText.set('Dealer Wins')
         dealerTally += 1
+        dealerText.set(dealerTally)
     elif score is 2:
         resultText.set('Player Wins')
         playerTally += 1
+        playerText.set(playerTally)
     else:
         resultText.set('Draw!')
 
@@ -170,15 +172,9 @@ mainWindow.title("Black Jack")
 mainWindow.geometry("640x480")
 mainWindow.configure(background='green')
 
-resultText = tkinter.StringVar()
+resultText = tkinter.IntVar()
 result = tkinter.Label(mainWindow, textvariable=resultText)
 result.grid(row=0, column=0, columnspan=3)
-dealerText = tkinter.StringVar(dealerTally)
-dealerWins = tkinter.Label(mainWindow, textvariable=dealerText)
-dealerWins.grid(row=0, column=2, columnspan=1)
-playerText = tkinter.StringVar(playerTally)
-playerWins = tkinter.Label(mainWindow, textvariable=playerText)
-playerWins.grid(row=0, column=3, columnspan=1)
 
 cardFrame = tkinter.Frame(mainWindow, relief='sunken', borderwidth=1, background='green')
 cardFrame.grid(row=1, column=0, sticky='ew', columnspan=3, rowspan=2)
@@ -216,20 +212,25 @@ resetGame.grid(row=0, column=2)
 shuffle = tkinter.Button(buttonFrame, text='Shuffle', command=shuffleDeck)
 shuffle.grid(row=0, column=3)
 
+dealerText = tkinter.IntVar()
+dealerWins = tkinter.Label(buttonFrame, textvariable=dealerText)
+dealerWins.grid(row=1, column=0, columnspan=1)
+
+playerText = tkinter.IntVar()
+playerWins = tkinter.Label(buttonFrame, textvariable=playerText)
+playerWins.grid(row=1, column=1, columnspan=1)
+
 # load cards
 cards = []
 loadImages(cards)
-# print(cards)
 
+# Create the list ot store the dealer's and player's hands
+dealerHand = []
+playerHand = []
 
 # Create a new deck of cards and shuffle them
 deck = list(cards)
 random.shuffle(deck)
 newGame()
-
-
-# Create the list ot store the dealer's and player's hands
-dealerHand = []
-playerHand = []
 
 mainWindow.mainloop()
