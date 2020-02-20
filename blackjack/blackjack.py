@@ -70,19 +70,18 @@ def dealDealer():
 
     playerScore = scoreHand(playerHand)
     if playerScore > 21:
+
         checkwin(1)
-        # resultText.set("Dealer Wins!")
 
     elif dealerScore > 21 or dealerScore < playerScore:
+
         checkwin(2)
-        # resultText.set('Player Wins!')
 
     elif dealerScore > playerScore:
-        # resultText.set("Dealer Wins!")
+
         checkwin(1)
 
     else:
-        # resultText.set('Draw!')
         checkwin(3)
 
 
@@ -122,7 +121,8 @@ def newGame():
     global playerCardFrame
     global playerHand
     global dealerHand
-
+    dealerWins.config(fg='black')
+    playerWins.config(fg='black')
     playerCardFrame.destroy()
     dealerCardFrame.destroy()
 
@@ -150,21 +150,37 @@ def checkwin(score):
 
     global dealerTally
     global playerTally
-
+    global dealerWins
+    global playerWins
     if score is 1:
         resultText.set('Dealer Wins')
         dealerTally += 1
         dealerText.set(dealerTally)
+        dealerWins.config(fg='red')
+        dealerWins.update()
     elif score is 2:
         resultText.set('Player Wins')
         playerTally += 1
         playerText.set(playerTally)
+        playerWins.config(fg='red')
+        playerWins.update()
     else:
         resultText.set('Draw!')
 
 
 playerTally = 0
 dealerTally = 0
+
+def play():
+
+    dealPlayer()
+    dealerHand.append(dealCard(dealerCardFrame))
+    dealerScoreLabel.set(scoreHand(dealerHand))
+    dealPlayer()
+
+
+    mainWindow.mainloop()
+
 
 mainWindow = tkinter.Tk()
 # Set up the screen and frames for the dealer and player
@@ -231,6 +247,10 @@ playerHand = []
 # Create a new deck of cards and shuffle them
 deck = list(cards)
 random.shuffle(deck)
-newGame()
 
-mainWindow.mainloop()
+# newGame()
+
+
+
+if __name__ == "__main__":
+    play()
