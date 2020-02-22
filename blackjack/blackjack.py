@@ -31,7 +31,7 @@ def loadImages(cardImages):
             cardImages.append((10, image,))
 
 
-def dealCard(frame):
+def _dealCard(frame):
     # Pop the next card off the top of the deck use .pop(0) to do so
     nextCard = deck.pop(0)
     # Add the card back to the end of the deck
@@ -64,7 +64,7 @@ def dealDealer():
 
     dealerScore = scoreHand(dealerHand)
     while 0 < dealerScore < 17:
-        dealerHand.append(dealCard(dealerCardFrame))
+        dealerHand.append(_dealCard(dealerCardFrame))
         dealerScore = scoreHand(dealerHand)
         dealerScoreLabel.set(dealerScore)
 
@@ -87,7 +87,7 @@ def dealDealer():
 
 def dealPlayer():
 
-    playerHand.append(dealCard(playerCardFrame))
+    playerHand.append(_dealCard(playerCardFrame))
     playerScore = scoreHand(playerHand)
 
     playerScoreLabel.set(playerScore)
@@ -113,6 +113,11 @@ def dealPlayer():
     #
     # print(locals())
 
+def initDeal():
+    dealPlayer()
+    dealerHand.append(_dealCard(dealerCardFrame))
+    dealerScoreLabel.set(scoreHand(dealerHand))
+    dealPlayer()
 
 def newGame():
 
@@ -136,10 +141,8 @@ def newGame():
     resultText.set("")
     dealerHand = []
     playerHand = []
-    dealPlayer()
-    dealerHand.append(dealCard(dealerCardFrame))
-    dealerScoreLabel.set(scoreHand(dealerHand))
-    dealPlayer()
+
+    initDeal()
 
 
 def shuffleDeck():
@@ -173,12 +176,7 @@ dealerTally = 0
 
 def play():
 
-    dealPlayer()
-    dealerHand.append(dealCard(dealerCardFrame))
-    dealerScoreLabel.set(scoreHand(dealerHand))
-    dealPlayer()
-
-
+    initDeal()
     mainWindow.mainloop()
 
 
